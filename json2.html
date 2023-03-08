@@ -12,7 +12,8 @@
     <button id="filterBtn">Filter</button>
     <div id="songsContainer"></div>
     <script>
-        function song_to_html(s) {
+        function songToHTML(s) {
+            // Given a JSON object of a song s, returns a string representation of HTML
             let html = "<div class='song'><h3>" + s["title"] + "</h3>";
             html += "<p>Artist(s): " + s["artists"].join(', ') + "</p>";
             html += "<p>Genre(s): " + s["genres"].join(', ') + "</p>";
@@ -21,6 +22,7 @@
         }
 
         function generateGenreList(songs) {
+            // Given the list of song JSON objects, generates a Set of genres
             const genres = new Set();
             songs.forEach(song => {
                 song["genres"].forEach(genre => {
@@ -31,6 +33,7 @@
         }
 
         function populateGenreDropdown(songs) {
+            // Given the list of song JSON objects, populates the genre dropdown with all unique genres
             const genres = generateGenreList(songs);
             console.log(genres);
             genres_dropdown = document.getElementById("genreDropdown");
@@ -41,6 +44,7 @@
         }
 
         function handleFilterBtn() {
+            // on btn click, only displays songs with selected genre
             const genres = document.getElementById("genreDropdown").options
             const genre = genres[genres.selectedIndex].text;
             console.log(genre)
@@ -49,14 +53,17 @@
         }
 
         function writeSongs(songs_json, genre) {
+            // Given a list of JSON songs and a genre, displays all songs of genre.
+            // NOTE: if genre is null, then displays all songs in list
             const songs_container = document.getElementById("songsContainer");
             songs_container.innerHTML = "";
             songs_json.forEach(song => {
                 if(!genre || song["genres"].includes(genre)) {
-                    songs_container.innerHTML += song_to_html(song);
+                    songs_container.innerHTML += songToHTML(song);
                 }
             });
         }
+
         let songs = null;
         $.getJSON("songs.json", function(data) 
             {
@@ -64,9 +71,7 @@
                 document.getElementById("filterBtn").onclick = handleFilterBtn;
                 populateGenreDropdown(songs);
                 writeSongs(songs, null);
-            })  //end get
-
-    
+            })
     </script>
     
 </body>
