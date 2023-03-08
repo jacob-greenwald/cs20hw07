@@ -8,9 +8,17 @@
     <title>Song List</title>
 </head>
 <body>
-    <select name="genreDropdown" id="genreDropdown"></select>
-    <button id="filterBtn">Filter</button>
-    <div id="songsContainer"></div>
+    <div>
+        <h2>Raw JSON:</h2>
+        <div id="rawJSON"></div>
+        <br><br>
+    </div>
+    <div>
+        <h2>User-Friendly Display:</h2>
+        <select name="genreDropdown" id="genreDropdown"></select>
+        <button id="filterBtn">Filter</button>
+        <div id="songsContainer"></div>
+    </div>
     <script>
         function songToHTML(s) {
             // Given a JSON object of a song s, returns a string representation of HTML
@@ -68,6 +76,7 @@
         $.getJSON("songs.json", function(data) 
             {
                 songs = data;
+                document.getElementById("rawJSON").innerHTML = JSON.stringify(songs);
                 document.getElementById("filterBtn").onclick = handleFilterBtn;
                 populateGenreDropdown(songs);
                 writeSongs(songs, null);
