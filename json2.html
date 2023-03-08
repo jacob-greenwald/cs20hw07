@@ -57,10 +57,10 @@
                 }
             });
         }
-
-        $.getJSON("songs.json", function(songs) 
+        let songs = null;
+        $.getJSON("songs.json", function(data) 
             {
-                // let songs = JSON(data);
+                songs = data;
                 document.getElementById("filterBtn").onclick = handleFilterBtn;
                 populateGenreDropdown(songs);
                 writeSongs(songs, null);
