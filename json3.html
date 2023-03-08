@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <form action="">
+        <select name="genreDropdown" id="genreDropdown"></select>
+        <button id="filterBtn">Filter</button>
+    </form> -->
+    <select name="genreDropdown" id="genreDropdown"></select>
+    <button id="filterBtn">Filter</button>
+    <div id="songsContainer"></div>
+    <script>
+        let songs = [
+            {
+                "title": "Hips Don't Lie",
+                "year": 2006,
+                "artists": ["Shakira"],
+                "genres": ["pop", "holiday"]
+            },
+            {
+                "title": "The Highwaymen",
+                "year": 1985,
+                "artists": ["The Highwaymen", "Johnny Cash", "Waylon Jennings", "Willie Nelson", "Kris Kristofferson"],
+                "genres": ["country music", "folk"]
+            },
+            {
+                "title": "Billie Jean",
+                "year": 1982,
+                "artists": ["Michael Jackson"],
+                "genres": ["funk", "classic rock", "disco", "dance pop"]
+            },
+            {
+                "title": "Strange Fruit",
+                "year": 1939,
+                "artists": ["Billie Holiday"],
+                "genres": ["jazz", "blues"]
+            },
+            {
+                "title": "Ivo",
+                "year": 1984,
+                "artists": ["Cocteau Twins"],
+                "genres": ["alternative", "indie"]
+            },
+            {
+                "title": "United in Grief",
+                "year": 2022,
+                "artists": ["Kendrick Lamar"],
+                "genres": ["hip-hop", "rap"]
+            },
+            {
+                "title": "White Rabbit",
+                "year": 1967,
+                "artists": ["Jefferson Airplane"],
+                "genres": ["rock"]
+            },
+            {
+                "title": "Daté, Pt. 2",
+                "year": 2020,
+                "artists": ["Kai-O", "Opty", "Rasou"],
+                "genres": ["rap", "hip-hop"]
+            },
+            {
+                "title": "As",
+                "year": 1967,
+                "artists": ["Stevie Wonder"],
+                "genres": ["soul", "RnB"]
+            },
+            {
+                "title": "Diamonds",
+                "year": 2012,
+                "artists": ["Rihanna"],
+                "genres": ["soul", "pop", "hip-hop", "rap"]
+            },
+            {
+                "title": "Road to Nowhere",
+                "year": 1985,
+                "artists": ["Talking Heads"],
+                "genres": ["pop", "indie", "rock"]
+            },
+            {
+                "title": "Red House",
+                "year": 1967,
+                "artists": ["Jimi Hendrix"],
+                "genres": ["classic rock"]
+            },
+            {
+                "title": "Go Your Own Way",
+                "year": 1976,
+                "artists": ["Fleetwood Mac"],
+                "genres": ["indie", "pop", "rock"]
+            },
+            {
+                "title": "Mask Off",
+                "year": 2017,
+                "artists": ["Future"],
+                "genres": ["hip-hop", "rap"]
+            }
+        ]
+        function song_to_html(s) {
+            let html = "<div class='song'><h3>" + s["title"] + "</h3>";
+            html += "<p>Artist(s): " + s["artists"].join(', ') + "</p>";
+            html += "<p>Genre(s): " + s["genres"].join(', ') + "</p>";
+            html += "<p>Released: " + s["year"] + "</p></div>";
+            return html
+        }
+
+        function generateGenreList(songs) {
+            const genres = new Set();
+            songs.forEach(song => {
+                song["genres"].forEach(genre => {
+                    genres.add(genre);
+                });
+            });
+            return genres;
+        }
+
+        function populateGenreDropdown(songs) {
+            const genres = generateGenreList(songs);
+            console.log(genres);
+            genres_dropdown = document.getElementById("genreDropdown");
+            genres.forEach(genre => {
+                const genre_option = "<option value='" + genre + "'>" + genre + "</option>"
+                genres_dropdown.innerHTML += genre_option;
+            });
+        }
+
+        function handleFilterBtn() {
+            const genres = document.getElementById("genreDropdown").options
+            const genre = genres[genres.selectedIndex].text;
+            console.log(genre)
+
+            writeSongs(songs, genre)
+        }
+
+        function writeSongs(songs_json, genre) {
+            const songs_container = document.getElementById("songsContainer");
+            songs_container.innerHTML = "";
+            songs_json.forEach(song => {
+                if(!genre || song["genres"].includes(genre)) {
+                    songs_container.innerHTML += song_to_html(song);
+                }
+            });
+        }
+
+        document.getElementById("filterBtn").onclick = handleFilterBtn;
+        populateGenreDropdown(songs);
+        writeSongs(songs, null);
+
+    </script>
+    
+</body>
+</html>

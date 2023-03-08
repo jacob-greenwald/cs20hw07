@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery-3.6.4.min.js"></script>
+    <title>Song List</title>
+</head>
+<body>
+    <select name="genreDropdown" id="genreDropdown"></select>
+    <button id="filterBtn">Filter</button>
+    <div id="songsContainer"></div>
+    <script>
+        function song_to_html(s) {
+            let html = "<div class='song'><h3>" + s["title"] + "</h3>";
+            html += "<p>Artist(s): " + s["artists"].join(', ') + "</p>";
+            html += "<p>Genre(s): " + s["genres"].join(', ') + "</p>";
+            html += "<p>Released: " + s["year"] + "</p></div>";
+            return html
+        }
+
+        function generateGenreList(songs) {
+            const genres = new Set();
+            songs.forEach(song => {
+                song["genres"].forEach(genre => {
+                    genres.add(genre);
+                });
+            });
+            return genres;
+        }
+
+        function populateGenreDropdown(songs) {
+            const genres = generateGenreList(songs);
+            console.log(genres);
+            genres_dropdown = document.getElementById("genreDropdown");
+            genres.forEach(genre => {
+                const genre_option = "<option value='" + genre + "'>" + genre + "</option>"
+                genres_dropdown.innerHTML += genre_option;
+            });
+        }
+
+        function handleFilterBtn() {
+            const genres = document.getElementById("genreDropdown").options
+            const genre = genres[genres.selectedIndex].text;
+            console.log(genre)
+
+            writeSongs(songs, genre)
+        }
+
+        function writeSongs(songs_json, genre) {
+            const songs_container = document.getElementById("songsContainer");
+            songs_container.innerHTML = "";
+            songs_json.forEach(song => {
+                if(!genre || song["genres"].includes(genre)) {
+                    songs_container.innerHTML += song_to_html(song);
+                }
+            });
+        }
+
+        $.getJSON("songs.json", function(songs) 
+            {
+                // let songs = JSON(data);
+                document.getElementById("filterBtn").onclick = handleFilterBtn;
+                populateGenreDropdown(songs);
+                writeSongs(songs, null);
+            })  //end get
+
+    
+    </script>
+    
+</body>
+</html>
